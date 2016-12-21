@@ -209,7 +209,7 @@ function fspr_login_form_fields() {
                 </p>
                 <div class="fs_forgot_password">
                     <a href="<?php echo home_url('/register') ?>">Register</a> |
-                    <a href="<?php echo home_url('/forgot-password') ?>">Forgot your password?</a>                 
+                    <a href="<?php echo home_url('/forgot-password') ?>">Forgot your password?</a>
                 </div>
             </fieldset>
         </form>
@@ -266,17 +266,17 @@ function fspr_login_member() {
             else 
                 $meta_data=get_user_meta($user->ID,'wp_capabilities',true);
             
-            if (is_super_admin()) {                                
+            if (is_super_admin()) {
                 wp_redirect(home_url('/wp-admin'));
-            } else {    
+            } else {
                 $site_url = other_user_profile_redirection();
-                if(isset($meta_data['subscriber'])){ 
+                if(isset($meta_data['subscriber'])){
                     
-                    //Redirect to welcome page when user login first time                     
+                    //Redirect to welcome page when user login first time
                     $first_login = get_user_meta( $user->ID, 'first_login', true );
-                    if( ! $first_login ) {                        
-                        update_user_meta( $user->ID, 'first_login', 'true', '' );                                               
-                        wp_redirect($site_url.'/welcome'); 
+                    if( ! $first_login ) {
+                        update_user_meta( $user->ID, 'first_login', 'true', '' );
+                        wp_redirect($site_url.'/welcome');
                         exit;
                     }
                     
@@ -286,14 +286,14 @@ function fspr_login_member() {
                     $getwhichIs = get_post_type($findblog_page); // Find Post Type using Post ID                    
                     if ($getwhichIs == "videos" || $getwhichIs == "post") {
                         if ($site_url)  
-                            wp_redirect($site_url); 
+                            wp_redirect($site_url);
                         else    
-                            wp_redirect($location);                        
-                    } else {                        
+                            wp_redirect($location);
+                    } else {
                         if ($site_url)  
                             wp_redirect($site_url);
                         else   
-                            wp_redirect(home_url());                        
+                            wp_redirect(home_url());
                     }
                     
                 } else {   
@@ -301,7 +301,7 @@ function fspr_login_member() {
                     if ($site_url)
                         wp_redirect($site_url . '/wp-admin');
                     else
-                        wp_redirect(home_url('/wp-admin'));                    
+                        wp_redirect(home_url('/wp-admin'));
                 }
             }
             exit;
@@ -424,11 +424,8 @@ function other_user_profile_redirection() {
         $userid = get_current_user_id();
         $user_blog_id = get_user_meta($userid, 'primary_blog', true);
         $blog_id = get_current_blog_id();
-        //if ($blog_id != $user_blog_id) {
-        //    $blog = get_blog_details($user_blog_id);
-        //    return $blog->siteurl;
-        //}
-        if ($blog_id) {
+        if ($blog_id != $user_blog_id) {
+            //$blog = get_blog_details($user_blog_id);
             $blog = get_blog_details($blog_id);
             return $blog->siteurl;
         }
