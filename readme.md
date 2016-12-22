@@ -27,3 +27,4 @@ Maintenance: `Ongoing`
 #### Notes
 * fsp-registration - Custom Registration Process plugin developed by FarShore
 * evergreen-wellness - Custom features and functions added to site by MIC
+* egw-registration - Revised version of Custom Registration plugin developed by FarShore

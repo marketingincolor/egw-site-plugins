@@ -143,7 +143,6 @@ function custom_registration_function() {
             $username, $password, $email, $website, $first_name, $last_name, $nickname, $bio
     );
 }
-
 // Register a new shortcode: [fsp_custom_registration]
 add_shortcode('fsp_custom_registration', 'custom_registration_shortcode');
 
@@ -175,7 +174,6 @@ function fspr_login_form() {
     }
     return $output;
 }
-
 add_shortcode('fsp_custom_login', 'fspr_login_form');
 
 // login form fields
@@ -228,7 +226,6 @@ function fspr_login_form_fields() {
 
 // logs a member in after submitting a form
 function fspr_login_member() {
-
     if (isset($_POST['fspr_user_login']) && isset($_POST['fspr_login_submit']) && wp_verify_nonce($_POST['fspr_login_nonce'], 'fspr-login-nonce')) {
 
         // Validate email
@@ -308,7 +305,6 @@ function fspr_login_member() {
         }
     }
 }
-
 add_action('init', 'fspr_login_member');
 
 // used for tracking error messages
