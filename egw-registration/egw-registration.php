@@ -8,6 +8,7 @@
 
 function registration_form($email, $first_name, $last_name, $postalcode, $agree) {
     echo '
+    <h1 class="large-orange-header">Sign-Up Now for a FREE Membership!</h1>
     <form action="' . $_SERVER['REQUEST_URI'] . '" method="post">
 
     <div class="join-field-row vc_col-xs-12">
@@ -49,11 +50,12 @@ function registration_form($email, $first_name, $last_name, $postalcode, $agree)
         <p><b>We ask for your age to help us to better serve the interests of our members,</b> tailoring content we create that’s suitable for the age groups participating in our website. We promise not to tell anyone how old you are! ;-)</p>
         <p><br></p>
         <p>To become a member, you must agree to the <a href="https://myevergreenwellness.com/terms-and-conditions" target="_blank">Terms and Conditions</a> of this website.</p>
-        <input type="checkbox" name="agree" value="' . ( isset($_POST['agree']) ? $agree : 'yes' ) . '" style="display:inline;">
+        <label class="agree-box">
+        <input type="checkbox" name="agree" value="' . ( isset($_POST['agree']) ? $agree : 'yes' ) . '" style="display:inline;" class="agree-box"></input>I Agree</label>
     </div>
 
     <input type="hidden" name="register_nonce" value="' . wp_create_nonce('register_nonce') . '"/>
-    <input type="submit" name="register_submit" value="Register"/>
+    <input type="submit" name="register_submit" value="Submit" class="register-submit-button"/>
 
     </form>
     ';
