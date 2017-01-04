@@ -6,91 +6,78 @@
   Description: A custom registration and login for wordpress front end.
  */
 
-function registration_form($username, $password, $email, $website, $first_name, $last_name, $nickname, $bio) {
+function registration_form($email, $first_name, $last_name, $postalcode, $agree) {
     echo '
     <form action="' . $_SERVER['REQUEST_URI'] . '" method="post">
-    <div>
-    <label for="username">Username <strong>*</strong></label>
-    <input type="text" name="username" value="' . ( isset($_POST['username']) ? $username : null ) . '">
+
+    <div class="join-field-row vc_col-xs-12">
+        <label for="fname" class="join-field-label">First Name</label>
+        <div class="join-field-horiz">
+            <input type="text" name="fname" value="' . ( isset($_POST['fname']) ? $first_name : null ) . '">
+        </div>
     </div>
      
-    <div>
-    <label for="password">Password <strong>*</strong></label>
-    <input type="password" name="password" value="' . ( isset($_POST['password']) ? $password : null ) . '">
+    <div class="join-field-row vc_col-xs-12">
+        <label for="lname" class="join-field-label">Last Name</label>
+        <div class="join-field-horiz">
+            <input type="text" name="lname" value="' . ( isset($_POST['lname']) ? $last_name : null ) . '">
+        </div>
     </div>
      
-    <div>
-    <label for="email">Email <strong>*</strong></label>
-    <input type="text" name="email" value="' . ( isset($_POST['email']) ? $email : null ) . '">
+    <div class="join-field-row vc_col-xs-12">
+        <label for="email" class="join-field-label">Email <strong>*</strong></label>
+        <div class="join-field-horiz">
+            <input type="text" name="email" value="' . ( isset($_POST['email']) ? $email : null ) . '">
+        </div>
     </div>
-     
-    <div>
-    <label for="website">Website</label>
-    <input type="text" name="website" value="' . ( isset($_POST['website']) ? $website : null ) . '">
+
+    <div class="join-field-row vc_col-xs-12">
+        <label for="age" class="join-field-label">Age <strong>*</strong></label>
+        <div class="join-field-horiz">
+            <input type="text" name="age" value="' . ( isset($_POST['age']) ? $age : null ) . '">
+        </div>
     </div>
-     
-    <div>
-    <label for="firstname">First Name</label>
-    <input type="text" name="fname" value="' . ( isset($_POST['fname']) ? $first_name : null ) . '">
+
+    <div class="join-field-row vc_col-xs-12">
+        <label for="postalcode" class="join-field-label">Postal Code <strong>*</strong></label>
+        <div class="join-field-horiz">
+            <input type="text" name="postalcode" value="' . ( isset($_POST['postalcode']) ? $postalcode : null ) . '">
+        </div>
     </div>
-     
-    <div>
-    <label for="website">Last Name</label>
-    <input type="text" name="lname" value="' . ( isset($_POST['lname']) ? $last_name : null ) . '">
+
+    <div class="join-field-row vc_col-xs-12">
+        <p><b>We ask for your age to help us to better serve the interests of our members,</b> tailoring content we create that’s suitable for the age groups participating in our website. We promise not to tell anyone how old you are! ;-)</p>
+        <p><br></p>
+        <p>To become a member, you must agree to the <a href="https://myevergreenwellness.com/terms-and-conditions" target="_blank">Terms and Conditions</a> of this website.</p>
+        <input type="checkbox" name="agree" value="' . ( isset($_POST['agree']) ? $agree : 'yes' ) . '" style="display:inline;">
     </div>
-     
-    <div>
-    <label for="nickname">Nickname</label>
-    <input type="text" name="nickname" value="' . ( isset($_POST['nickname']) ? $nickname : null ) . '">
-    </div>
-     
-    <div>
-    <label for="bio">About / Bio</label>
-    <textarea name="bio">' . ( isset($_POST['bio']) ? $bio : null ) . '</textarea>
-    </div>
+
     <input type="hidden" name="register_nonce" value="' . wp_create_nonce('register_nonce') . '"/>
     <input type="submit" name="register_submit" value="Register"/>
+
     </form>
     ';
 }
 
-function registration_validation($username, $password, $email, $website, $first_name, $last_name, $nickname, $bio) {
+function registration_validation($email, $first_name, $last_name, $postalcode, $agree) {
     global $reg_errors;
     $reg_errors = new WP_Error;
 
-    if (empty($username) || empty($password) || empty($email)) {
+    if (empty($email) || empty($agree)) {
         $reg_errors->add('field', 'Required form field is missing');
     }
-    if (4 > strlen($username)) {
-        $reg_errors->add('username_length', 'Username too short. At least 4 characters is required');
-    }
-    if (username_exists($username)) {
-        $reg_errors->add('user_name', 'Sorry, that username already exists!');
-    }
-    if (!validate_username($username)) {
-        $reg_errors->add('username_invalid', 'Sorry, the username you entered is not valid');
-    }
-    if (5 > strlen($password)) {
-        $reg_errors->add('password', 'Password length must be greater than 5');
-    }
-
     if (!is_email($email)) {
         $reg_errors->add('email_invalid', 'Email is not valid');
     }
     if (email_exists($email)) {
         $reg_errors->add('email', 'Email Already in use');
     }
-    if (!empty($website)) {
-        if (!filter_var($website, FILTER_VALIDATE_URL)) {
-            $reg_errors->add('website', 'Website is not a valid URL');
-        }
-    }
     if (is_wp_error($reg_errors)) {
 
         foreach ($reg_errors->get_error_messages() as $error) {
 
             echo '<div>';
-            echo '<strong>ERROR</strong>:';
+            echo '<strong>ERROR:</strong>&nbsp;';
             echo $error . '<br/>';
             echo '</div>';
         }
@@ -98,53 +85,64 @@ function registration_validation($username, $password, $email, $website, $first_
 }
 
 function complete_registration() {
-    global $reg_errors, $username, $password, $email, $website, $first_name, $last_name, $nickname, $bio;
+    global $reg_errors, $password, $email, $first_name, $last_name, $postalcode;
+    $village_codes = array('32159', '32162', '32163');
+    if ( in_array( $postalcode, $village_codes )) {
+        $userlocation = 'villages_member';
+    } else {
+        $userlocation = 'subscriber';
+    }
     if (1 > count($reg_errors->get_error_messages())) {
         $userdata = array(
-            'user_login' => $username,
+            'user_login' => $email,
             'user_email' => $email,
-            'user_pass' => $password,
-            'user_url' => $website,
             'first_name' => $first_name,
             'last_name' => $last_name,
-            'nickname' => $nickname,
-            'description' => $bio,
+            'postalcode' => $postalcode,
+            'role' => $userlocation,
         );
         $user = wp_insert_user($userdata);
-        echo 'Registration complete. Goto <a href="' . get_site_url() . '/login">login page</a>.';
+
+        if ($user) {
+            $addrole = new WP_User( $user );
+            $addrole->add_role( 'subscriber' );
+            wp_redirect( home_url() . '/register-success');
+        } else {
+            echo 'Registration could not be completed. See error data above.';
+        }
+
+        //echo 'Registration complete. Goto <a href="' . get_site_url() . '/login">login page</a>.';
+        //wp_redirect( home_url() . '/register-success');
     }
 }
 
 function custom_registration_function() {
-    if (isset($_POST['register_submit']) && isset($_POST['username']) && wp_verify_nonce($_POST['register_nonce'], 'register_nonce')) {
+    if (isset($_POST['register_submit']) && isset($_POST['email']) && wp_verify_nonce($_POST['register_nonce'], 'register_nonce')) {
         registration_validation(
-                $_POST['username'], $_POST['password'], $_POST['email'], $_POST['website'], $_POST['fname'], $_POST['lname'], $_POST['nickname'], $_POST['bio']
+                $_POST['email'], $_POST['fname'], $_POST['lname'], $_POST['postalcode'], $_POST['agree']
         );
 
         // sanitize user form input
-        global $username, $password, $email, $website, $first_name, $last_name, $nickname, $bio;
-        $username = sanitize_user($_POST['username']);
-        $password = esc_attr($_POST['password']);
+        global $email, $first_name, $last_name, $postalcode, $agree;
         $email = sanitize_email($_POST['email']);
-        $website = esc_url($_POST['website']);
         $first_name = sanitize_text_field($_POST['fname']);
         $last_name = sanitize_text_field($_POST['lname']);
-        $nickname = sanitize_text_field($_POST['nickname']);
-        $bio = esc_textarea($_POST['bio']);
+        $postalcode = sanitize_text_field($_POST['postalcode']);
+        $agree = $_POST['agree'];
 
         // call @function complete_registration to create the user
         // only when no WP_error is found
         complete_registration(
-                $username, $password, $email, $website, $first_name, $last_name, $nickname, $bio
+                $email, $first_name, $last_name, $postalcode
         );
     }
 
     registration_form(
-            $username, $password, $email, $website, $first_name, $last_name, $nickname, $bio
+            $email, $first_name, $last_name, $postalcode, $agree
     );
 }
-// Register a new shortcode: [fsp_custom_registration]
-add_shortcode('fsp_custom_registration', 'custom_registration_shortcode');
+// Register a new shortcode: [egw_custom_registration]
+add_shortcode('egw_custom_registration', 'custom_registration_shortcode');
 
 // The callback function that will replace [book]
 function custom_registration_shortcode() {
