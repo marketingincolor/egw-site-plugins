@@ -102,12 +102,15 @@ function complete_registration() {
             'last_name' => $last_name,
             'postalcode' => $postalcode,
             'role' => $userlocation,
+            //'primary_blog' => '1',
         );
         $user = wp_insert_user($userdata);
 
         if ($user) {
             $addrole = new WP_User( $user );
             $addrole->add_role( 'subscriber' );
+            egw_send_registration_email($email);
+
             wp_redirect( home_url() . '/register-success');
         } else {
             echo 'Registration could not be completed. See error data above.';
@@ -115,6 +118,24 @@ function complete_registration() {
 
         //echo 'Registration complete. Goto <a href="' . get_site_url() . '/login">login page</a>.';
         //wp_redirect( home_url() . '/register-success');
+    }
+}
+
+function egw_send_registration_email($email) {
+    $login_page = home_url('/login');
+    $recovery_page = home_url('/forgot-password');
+    $subject = "Evergreen Wellness remote registration";
+    $message = "Hi there! \n You have successfully registered to the site.\n\n Your login name is {$email}. To use the site, you must first reset your password.\n\nPlease visit <a href='$recovery_page'>$recovery_page</a> to create a new password.\n";
+    $sender = 'From: Admin <admin@myevergreenwellness.com>' . "\r\n";
+    $headers[] = 'MIME-Version: 1.0' . "\r\n";
+    $headers[] = 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+    $headers[] = "X-Mailer: PHP \r\n";
+    $headers[] = $sender;
+
+    $success = wp_mail($email, $subject, $message, $headers);
+    // email admin on success
+    if (true == $success) {
+        wp_mail('admin@myevergreenwellness.com', 'Evergreen Wellness remote registration', "User {$email} was registered on " . date('d.m. Y H:i:s', time()));
     }
 }
 
@@ -257,17 +278,17 @@ function fspr_login_member() {
             wp_set_current_user($user->ID, $userinfo);
             do_action('wp_login', $userinfo);
             //wp_redirect(home_url('/user-profile'));
-            $user_blog_id=get_user_meta($user->ID,'primary_blog',true);
-            if($user_blog_id!=1)
-                $meta_data=get_user_meta($user->ID,'wp_'.$user_blog_id.'_capabilities',true);
+            $user_blog_id = get_user_meta($user->ID, 'primary_blog', true);
+            if($user_blog_id != 1)
+                $meta_data = get_user_meta($user->ID, 'wp_'.$user_blog_id.'_capabilities', true);
             else 
-                $meta_data=get_user_meta($user->ID,'wp_capabilities',true);
+                $meta_data = get_user_meta($user->ID, 'wp_capabilities', true);
             
             if (is_super_admin()) {
                 wp_redirect(home_url('/wp-admin'));
             } else {
                 $site_url = other_user_profile_redirection();
-                if(isset($meta_data['subscriber'])){
+                if(isset($meta_data['subscriber']) || isset($meta_data['villages_member'])){
                     
                     //Redirect to welcome page when user login first time
                     $first_login = get_user_meta( $user->ID, 'first_login', true );
