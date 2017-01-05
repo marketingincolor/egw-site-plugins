@@ -8,7 +8,6 @@
 
 function registration_form($email, $first_name, $last_name, $postalcode, $agree) {
     echo '
-    <h1 class="large-orange-header">Sign-Up Now for a FREE Membership!</h1>
     <form action="' . $_SERVER['REQUEST_URI'] . '" method="post">
 
     <div class="join-field-row vc_col-xs-12">
