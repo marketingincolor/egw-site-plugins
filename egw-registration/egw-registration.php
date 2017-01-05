@@ -101,8 +101,7 @@ function complete_registration() {
             'first_name' => $first_name,
             'last_name' => $last_name,
             'postalcode' => $postalcode,
-            'role' => $userlocation,
-            //'primary_blog' => '1',
+            'role' => $userlocation
         );
         $user = wp_insert_user($userdata);
 
@@ -110,7 +109,7 @@ function complete_registration() {
             $addrole = new WP_User( $user );
             $addrole->add_role( 'subscriber' );
             egw_send_registration_email($email);
-
+            add_user_meta( $user, 'primary_blog', 1);
             wp_redirect( home_url() . '/register-success');
         } else {
             echo 'Registration could not be completed. See error data above.';
@@ -288,8 +287,13 @@ function fspr_login_member() {
                 wp_redirect(home_url('/wp-admin'));
             } else {
                 $site_url = other_user_profile_redirection();
-                if(isset($meta_data['subscriber']) || isset($meta_data['villages_member'])){
-                    
+                if(isset($meta_data['administrator'])){
+                    //Redirect to admin page if user role is admin
+                    if ($site_url)
+                        wp_redirect($site_url . '/wp-admin');
+                    else
+                        wp_redirect(home_url('/wp-admin'));
+                } else {   
                     //Redirect to welcome page when user login first time
                     $first_login = get_user_meta( $user->ID, 'first_login', true );
                     if( ! $first_login ) {
@@ -313,13 +317,6 @@ function fspr_login_member() {
                         else   
                             wp_redirect(home_url());
                     }
-                    
-                } else {   
-                    //Redirect to admin page if user role is admin
-                    if ($site_url)
-                        wp_redirect($site_url . '/wp-admin');
-                    else
-                        wp_redirect(home_url('/wp-admin'));
                 }
             }
             exit;
