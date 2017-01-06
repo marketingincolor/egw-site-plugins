@@ -387,8 +387,9 @@ register_activation_hook(__FILE__, 'add_roles_on_plugin_activation');
 /* * * Login / Registeration Redirect 
  * Author : Ramkumar S
  * Create Date: May 25 2016
- * Updated Date: July 18 2016
- * Updated by  : Muthupandi
+ * Updated Date: January 6 2017
+ * Updated by  : MIC DEV
+ * Notes: Removed redirect logic NEEDED by multisite setup due to single site change; Will need to be REPLACED should to use multisite again
  */
 
 function fsp_template_redirect() {
@@ -426,6 +427,7 @@ function fsp_template_redirect() {
                 }
             }
         } else if (is_page('user-profile') && is_super_admin()) {
+            //See original FSP Plugin for CORRECT multisite logic
             wp_redirect(home_url('/wp-admin'));
         }
     } else {
