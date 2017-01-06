@@ -110,7 +110,7 @@ function complete_registration() {
         if ($user) {
             $addrole = new WP_User( $user );
             $addrole->add_role( 'subscriber' );
-            egw_send_registration_email($email, $password);
+            egw_send_registration_email($email, $password, $first_name);
             add_user_meta( $user, 'primary_blog', 1);
             wp_redirect( home_url() . '/register-success');
         } else {
@@ -122,12 +122,22 @@ function complete_registration() {
     }
 }
 
-function egw_send_registration_email($email, $password) {
+function egw_send_registration_email($email, $password, $first_name) {
     $login_page = home_url('/login');
-    $recovery_page = home_url('/forgot-password');
     $subject = "Evergreen Wellness remote registration";
-    $message = "Hi there! \r\n You have successfully registered to the site.\r\n Your login name is {$email} and your password is {$password}.\r\n" . "Please visit <a href='$login_page'>$login_page</a> to login. \r\n";
-    $sender = 'From: Admin <admin@myevergreenwellness.com>' . "\r\n";
+    $message = "Hi, {$first_name},\r\n<br>";
+    $message .= "<br>";
+    $message .= "You have successfully joined Evergreen Wellness and can now enjoy the full benefits of our website!\r\n<br>";
+    $message .= "<br>";
+    $message .= "Please visit <a href='$login_page'>$login_page</a> and login with the following information: \r\n<br>";
+    $message .= "<br>";
+    $message .= "Your email: {$email} \r\n<br>";
+    $message .= "Your password: {$password} \r\n<br>";
+    $message .= "<br>";
+    $message .= "We hope you enjoy the website. Here's to your happier, healthier life! \r\n<br>";
+    $message .= "<br>";
+    $message .= "The Evergreen Wellness Team";
+    $sender = 'From: Evergreen Wellness <support@myevergreenwellness.com>' . "\r\n";
     $headers[] = 'MIME-Version: 1.0' . "\r\n";
     $headers[] = 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
     $headers[] = "X-Mailer: PHP \r\n";
@@ -135,8 +145,12 @@ function egw_send_registration_email($email, $password) {
 
     $success = wp_mail($email, $subject, $message, $headers);
     // email admin on success
-    if (true == $success) {
-        wp_mail('admin@myevergreenwellness.com', 'Evergreen Wellness Site registration', "User {$email} just registered on the site.");
+    if ($success) {
+        $admin_to = "admin@myevergreenwellness.com";
+        $admin_sub = "EGW User Registration";
+        $admin_msg = "User {$email} was registered on " . date('m.d.Y H:i:s');
+        $admin_hdr = array('Content-Type: text/html; charset=UTF-8');
+        $send_admin = wp_mail($admin_to, $admin_sub, $admin_msg, $admin_hdr);
     }
 }
 
