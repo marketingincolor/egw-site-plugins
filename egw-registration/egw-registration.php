@@ -384,7 +384,6 @@ function add_roles_on_plugin_activation() {
 
 register_activation_hook(__FILE__, 'add_roles_on_plugin_activation');
 
-
 /* * * Login / Registeration Redirect 
  * Author : Ramkumar S
  * Create Date: May 25 2016
@@ -394,7 +393,7 @@ register_activation_hook(__FILE__, 'add_roles_on_plugin_activation');
 
 function fsp_template_redirect() {
     
-    if(is_user_logged_in()){               
+    if(is_user_logged_in()){
 
         $user_blog_id=get_user_meta(get_current_user_id(),'primary_blog',true);
         if($user_blog_id!=1)
@@ -402,7 +401,7 @@ function fsp_template_redirect() {
         else 
             $meta_data=get_user_meta(get_current_user_id(),'wp_capabilities',true);
             
-        if ((is_page('login') || is_page('register'))) {  
+        if ((is_page('login') || is_page('register'))) {
             
             if(wp_get_referer()){
                 $location = wp_get_referer();
@@ -426,20 +425,8 @@ function fsp_template_redirect() {
                     wp_redirect(home_url($webtype));
                 }
             }
-        } else if (is_page('user-profile')) {
-
-            if (is_super_admin()) {
-                wp_redirect(home_url('/wp-admin'));
-            } else {
-                $webtype = "/wp-admin";
-                if (isset($meta_data['subscriber'])) {
-                    $webtype = "/user-profile";
-                }
-                $site_url = other_user_profile_redirection();
-                if ($site_url) {
-                    wp_redirect($site_url . $webtype);
-                }
-            }
+        } else if (is_page('user-profile') && is_super_admin()) {
+            wp_redirect(home_url('/wp-admin'));
         }
     } else {
         if (is_page('user-profile')) {
