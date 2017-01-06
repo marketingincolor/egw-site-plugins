@@ -124,7 +124,7 @@ function complete_registration() {
 
 function egw_send_registration_email($email, $password, $first_name) {
     $login_page = home_url('/login');
-    $subject = "Evergreen Wellness remote registration";
+    $subject = "Important New Member Information";
     $message = "Hi, {$first_name},\r\n<br>";
     $message .= "<br>";
     $message .= "You have successfully joined Evergreen Wellness and can now enjoy the full benefits of our website!\r\n<br>";
