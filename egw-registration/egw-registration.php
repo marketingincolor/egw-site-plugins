@@ -8,7 +8,7 @@
 
 function registration_form($email, $first_name, $last_name, $postalcode, $agree) {
     echo '
-    <form action="' . $_SERVER['REQUEST_URI'] . '" method="post">
+    <form id="egw-registration" action="' . $_SERVER['REQUEST_URI'] . '" method="post">
 
     <div class="join-field-row vc_col-xs-12">
         <label for="fname" class="join-field-label">First Name</label>
