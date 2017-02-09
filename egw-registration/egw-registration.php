@@ -7,6 +7,7 @@
  */
 
 function registration_form($email, $first_name, $last_name, $postalcode, $agree) {
+    $url = get_stylesheet_directory_uri() . "/assets/js/google-sheet.js";
     echo '
     <form id="egw-registration" action="' . $_SERVER['REQUEST_URI'] . '" method="post">
 
@@ -56,8 +57,8 @@ function registration_form($email, $first_name, $last_name, $postalcode, $agree)
     <input type="hidden" name="register_nonce" value="' . wp_create_nonce('register_nonce') . '"/>
     <input type="submit" name="register_submit" value="Submit" class="register-submit-button"/>
 
-    </form>
-    ';
+    </form> 
+    <script type="text/javascript" src="'. $url . '"></script>'; 
 }
 
 function registration_validation($email, $first_name, $last_name, $postalcode, $agree) {
