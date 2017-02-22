@@ -103,6 +103,7 @@ function egw_columns_content( $column_name, $post_id ) {
     echo intval($prodid);
 }
 add_filter( 'manage_edit-videos_sortable_columns', 'egw_sortable_production_column' );
+add_filter( 'manage_edit-post_sortable_columns', 'egw_sortable_production_column' );
 function egw_sortable_production_column( $columns ) {
     $columns['prodid'] = 'prod';
     //To make a column 'un-sortable' remove it from the array
@@ -112,7 +113,7 @@ function egw_sortable_production_column( $columns ) {
 /**
  * Add custom sort column for Production ID to POST and VIDEO content types via SEARCH component in edit view
  */
-function custom_search_query( $query ) {
+/*function custom_search_query( $query ) {
     $custom_fields = array(
         'production_id'
     );
@@ -130,4 +131,4 @@ function custom_search_query( $query ) {
         $query->set("meta_query", $meta_query);
     };
 }
-add_filter( "pre_get_posts", "custom_search_query");
+add_filter( "pre_get_posts", "custom_search_query");*/
