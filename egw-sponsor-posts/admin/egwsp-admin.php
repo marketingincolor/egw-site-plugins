@@ -1,3 +1,3 @@
 <?php
-require_once 'templates/egwsp-metabox.php';
-require_once 'templates/egwsp-expiration-column.php';
+require_once 'templates/egwsp-add-user-meta.php';
+require_once 'templates/egwsp-sponsor-posts-columns.php';
