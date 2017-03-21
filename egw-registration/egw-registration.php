@@ -57,8 +57,8 @@ function registration_form($email, $first_name, $last_name, $postalcode, $agree)
     <input type="hidden" name="register_nonce" value="' . wp_create_nonce('register_nonce') . '"/>
     <input type="submit" name="register_submit" value="Submit" class="register-submit-button"/>
 
-    </form> 
-    <script type="text/javascript" src="'. $url . '"></script>'; 
+    </form>'; 
+    //<script type="text/javascript" src="'. $url . '"></script>'; 
 }
 
 function registration_validation($email, $first_name, $last_name, $postalcode, $agree) {
@@ -226,7 +226,7 @@ function fspr_login_form_fields() {
         fspr_show_error_messages();
         ?>
 
-        <form id="fspr_login_form"  class="fspr_form"action="" method="post">
+        <form id="fspr_login_form"  class="fspr_form" action="" method="post">
             <fieldset>
                 <ul>
                     <li><input type="hidden" name="redirect" value="<?php echo $_SERVER['HTTP_REFERER']; ?>" />
