@@ -6,7 +6,7 @@
   Description: A custom registration and login for wordpress front end.
  */
 
-function registration_form($email, $first_name, $last_name, $postalcode, $agree) {
+function registration_form($email, $first_name, $last_name, $postalcode, $agree, $zip_error, $form_error, $email_error) {
     $url = get_stylesheet_directory_uri() . "/assets/js/google-sheet.js";
     echo '
     <form id="egw-registration" action="' . $_SERVER['REQUEST_URI'] . '" method="post">
@@ -27,6 +27,7 @@ function registration_form($email, $first_name, $last_name, $postalcode, $agree)
      
     <div class="join-field-row vc_col-xs-12">
         <label for="email" class="join-field-label">Email <strong>*</strong></label>
+            <span class="error register_error">' .  $email_error  . '</span>
         <div class="join-field-horiz">
             <input type="text" name="email" value="' . ( isset($_POST['email']) ? $email : null ) . '">
         </div>
@@ -41,19 +42,20 @@ function registration_form($email, $first_name, $last_name, $postalcode, $agree)
 
     <div class="join-field-row vc_col-xs-12">
         <label for="postalcode" class="join-field-label">Postal Code <strong>*</strong></label>
+            <span class="error register_error">' . $zip_error . '</span>
         <div class="join-field-horiz">
             <input type="text" name="postalcode" value="' . ( isset($_POST['postalcode']) ? $postalcode : null ) . '">
         </div>
     </div>
 
     <div class="join-field-row vc_col-xs-12">
-        <p><b>We ask for your age to help us to better serve the interests of our members,</b> tailoring content we create that’s suitable for the age groups participating in our website. We promise not to tell anyone how old you are! ;-)</p>
+        <p><b>We ask for your age to help us to better serve the interests of our members,</b> tailoring content we create that’s suitable for the age groups participating in our website. We promise not to tell anyone how young you are! ;-)</p>
         <p><br></p>
         <p>To become a member, you must agree to the <a href="https://myevergreenwellness.com/terms-and-conditions" target="_blank">Terms and Conditions</a> of this website.</p>
         <label class="agree-box">
-        <input type="checkbox" name="agree" value="' . ( isset($_POST['agree']) ? $agree : 'yes' ) . '" style="display:inline;" class="agree-box"></input>I Agree</label>
+        <input type="checkbox" name="agree" value="' . ( isset($_POST['agree']) ? $agree : 'yes' ) . '" style="display:inline;" class="agree-box"></input>I Agree*</label>
+        <br/><span class="error register_error">' . $form_error . '</span>
     </div>
-
     <input type="hidden" name="register_nonce" value="' . wp_create_nonce('register_nonce') . '"/>
     <input type="submit" name="register_submit" value="Submit" class="register-submit-button"/>
 
@@ -62,27 +64,23 @@ function registration_form($email, $first_name, $last_name, $postalcode, $agree)
 }
 
 function registration_validation($email, $first_name, $last_name, $postalcode, $agree) {
-    global $reg_errors;
+    global $reg_errors, $zip_error, $form_error, $email_error;
     $reg_errors = new WP_Error;
-
     if (empty($email) || empty($agree)) {
-        $reg_errors->add('field', 'Required form field is missing');
+        $reg_errors->add('field', 'Required form fields are missing');
+        $form_error = $reg_errors->get_error_message('field');
     }
     if (!is_email($email)) {
         $reg_errors->add('email_invalid', 'Email is not valid');
+        $email_error = $reg_errors->get_error_message('email_invalid');
     }
     if (email_exists($email)) {
         $reg_errors->add('email', 'Email Already in use');
+        $email_error = $reg_errors->get_error_message('email');
     }
-    if (is_wp_error($reg_errors)) {
-
-        foreach ($reg_errors->get_error_messages() as $error) {
-
-            echo '<div>';
-            echo '<strong>ERROR:</strong>&nbsp;';
-            echo $error . '<br/>';
-            echo '</div>';
-        }
+    if (empty($postalcode)) {
+        $reg_errors->add('postal', 'Postal Code is missing');
+        $zip_error = $reg_errors->get_error_message('postal');
     }
 }
 
@@ -156,6 +154,7 @@ function egw_send_registration_email($email, $password, $first_name) {
 }
 
 function custom_registration_function() {
+    global $zip_error, $form_error, $email_error;
     if (isset($_POST['register_submit']) && isset($_POST['email']) && wp_verify_nonce($_POST['register_nonce'], 'register_nonce')) {
         registration_validation(
                 $_POST['email'], $_POST['fname'], $_POST['lname'], $_POST['postalcode'], $_POST['agree']
@@ -175,9 +174,8 @@ function custom_registration_function() {
                 $email, $first_name, $last_name, $postalcode
         );
     }
-
     registration_form(
-            $email, $first_name, $last_name, $postalcode, $agree
+            $email, $first_name, $last_name, $postalcode, $agree, $zip_error, $form_error, $email_error
     );
 }
 // Register a new shortcode: [egw_custom_registration]
