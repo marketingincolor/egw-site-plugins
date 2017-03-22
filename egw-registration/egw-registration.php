@@ -49,7 +49,7 @@ function registration_form($email, $first_name, $last_name, $postalcode, $agree,
     </div>
 
     <div class="join-field-row vc_col-xs-12">
-        <p><b>We ask for your age to help us to better serve the interests of our members,</b> tailoring content we create that’s suitable for the age groups participating in our website. We promise not to tell anyone how young you are! ;-)</p>
+        <p><b>We ask for your age to help us better serve the interests of our members,</b> tailoring content we create that’s suitable for the age groups participating in our website. We promise not to tell anyone how young you are! ;-)</p>
         <p><br></p>
         <p>To become a member, you must agree to the <a href="https://myevergreenwellness.com/terms-and-conditions" target="_blank">Terms and Conditions</a> of this website.</p>
         <label class="agree-box">
