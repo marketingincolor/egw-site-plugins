@@ -26,10 +26,11 @@ function registration_form($email, $first_name, $last_name, $postalcode, $agree,
     </div>
      
     <div class="join-field-row vc_col-xs-12">
-        <label for="email" class="join-field-label">Email <strong>*</strong></label>
+        <label for="email" class="join-field-label">Your Email <strong>*</strong></label>
             <span class="error register_error">' .  $email_error  . '</span>
         <div class="join-field-horiz">
             <input type="text" name="email" value="' . ( isset($_POST['email']) ? $email : null ) . '">
+            <span>Please add support@myevergreenwellness.com to your address book to ensure your email doesn\'t go into your spam folder.</span>
         </div>
     </div>
 
