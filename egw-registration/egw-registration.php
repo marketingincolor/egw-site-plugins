@@ -30,7 +30,7 @@ function registration_form($email, $first_name, $last_name, $postalcode, $agree,
             <span class="error register_error">' .  $email_error  . '</span>
         <div class="join-field-horiz">
             <input type="text" name="email" value="' . ( isset($_POST['email']) ? $email : null ) . '">
-            <span>Please add support@myevergreenwellness.com to your address book to ensure your email doesn\'t go into your spam folder.</span>
+            <span style="font-size: 13px; display: block; line-height: 15px;">Please add support@myevergreenwellness.com to your address book to ensure your email doesn\'t go into your spam folder.</span>
         </div>
     </div>
 
