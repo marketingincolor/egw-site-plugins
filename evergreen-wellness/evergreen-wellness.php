@@ -39,6 +39,7 @@
 /*-------------------------------------------------------------------------------
  * Table of Contents
  * 1.0.0		Admin Functions
+ * 2.0.0        WP_MAIL Functions
  * 
  *-------------------------------------------------------------------------------
  */
@@ -132,3 +133,15 @@ function egw_sortable_production_column( $columns ) {
     };
 }
 add_filter( "pre_get_posts", "custom_search_query");*/
+
+
+/* ------------------------------------------------------------------------------
+* 2.0.0 WP-MAIL Functions
+* change the return path in your WordPress email settings match from address
+* ------------------------------------------------------------------------------
+*/
+add_action( 'phpmailer_init', 'fix_egw_email_return_path' );
+ 
+function fix_egw_email_return_path( $phpmailer ) {
+    $phpmailer->Sender = $phpmailer->From;
+}
