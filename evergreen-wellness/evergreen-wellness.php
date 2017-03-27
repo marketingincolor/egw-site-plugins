@@ -132,3 +132,77 @@ function egw_sortable_production_column( $columns ) {
     };
 }
 add_filter( "pre_get_posts", "custom_search_query");*/
+
+
+
+/**
+ * Add custom options menu for setting and changing system variables
+ */
+add_action( 'admin_menu', 'egw_add_admin_menu' );
+add_action( 'admin_init', 'egw_settings_init' );
+function egw_add_admin_menu(  ) { 
+    add_submenu_page( 'options-general.php', 'Evergreen Wellness', 'Evergreen Wellness', 'manage_options', 'evergreen_wellness', 'egw_options_page' );
+}
+function egw_settings_init(  ) { 
+    register_setting( 'pluginPage', 'egw_settings' );
+    add_settings_section(
+        'egw_section', 
+        __( 'Your section description', 'egw' ), 
+        'egw_settings_section_callback', 
+        'egw_settings_page'
+    );
+    add_settings_field( 
+        'egw_text_field_0', 
+        __( 'Settings field description', 'egw' ), 
+        'egw_text_field_0_render', 
+        'egw_settings_page', 
+        'egw_section' 
+    );
+    add_settings_field( 
+        'egw_text_field_1', 
+        __( 'Settings field description', 'egw' ), 
+        'egw_text_field_1_render', 
+        'egw_settings_page', 
+        'egw_section' 
+    );
+    add_settings_field( 
+        'egw_text_field_2', 
+        __( 'Settings field description', 'egw' ), 
+        'egw_text_field_2_render', 
+        'egw_settings_page', 
+        'egw_section' 
+    );
+}
+function egw_text_field_0_render() { 
+    $options = get_option( 'egw_settings' );
+    ?>
+    <input type='text' name='egw_settings[egw_text_field_0]' value='<?php echo $options['egw_text_field_0']; ?>'>
+    <?php
+}
+function egw_text_field_1_render() { 
+    $options = get_option( 'egw_settings' );
+    ?>
+    <input type='text' name='egw_settings[egw_text_field_1]' value='<?php echo $options['egw_text_field_1']; ?>'>
+    <?php
+}
+function egw_text_field_2_render() { 
+    $options = get_option( 'egw_settings' );
+    ?>
+    <input type='text' name='egw_settings[egw_text_field_2]' value='<?php echo $options['egw_text_field_2']; ?>'>
+    <?php
+}
+function egw_settings_section_callback() { 
+    echo __( 'This section description', 'egw' );
+}
+function egw_options_page() { 
+    ?>
+    <form action='options.php' method='post'>
+        <h2>Evergreen Wellness</h2>
+        <?php
+        settings_fields( 'egw_settings_page' );
+        do_settings_sections( 'egw_settings_page' );
+        submit_button();
+        ?>
+    </form>
+    <?php
+}
