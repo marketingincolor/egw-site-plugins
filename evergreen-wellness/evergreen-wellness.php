@@ -41,7 +41,7 @@
  * 1.0.0		Admin Functions
  * 2.0.0        WP_MAIL Functions
  * 3.0.0        Featured Personalities Sidebar
- * 
+ * 4.0.0        Facebook Comments
  *-------------------------------------------------------------------------------
  */
 
@@ -64,3 +64,9 @@ require 'egw-mail-functions.php';
 * ------------------------------------------------------------------------------
 */
 require 'egw-featured-personality-widget.php';
+
+/* ------------------------------------------------------------------------------
+* 4.0.0  Facebook Comments
+* ------------------------------------------------------------------------------
+*/
+require 'egw-facebook-comments.php';
