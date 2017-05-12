@@ -1,0 +1,10 @@
+.egw-admin-live-event-fields {
+    color: #333333;
+    font-size: 13px;
+    line-height: 1.5em;
+    padding: 0;
+    margin: 0 0 3px;
+    display: block;
+    vertical-align: text-bottom;
+}
+.egw-event-text-area { width: 100%; min-height: 150px; margin: 15px 0px; }
