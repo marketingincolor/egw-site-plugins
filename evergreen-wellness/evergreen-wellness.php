@@ -37,19 +37,23 @@
 */
 
 /*-------------------------------------------------------------------------------
- * Table of Contents
- * 1.0.0		Admin Functions
+ * Table of Contents      
+ * 1.0.0		Admin Functions                     
  * 2.0.0        WP_MAIL Functions
- * 3.0.0        Featured Personalities Sidebar
+ * 3.0.0        Featured Personalities Widget
  * 4.0.0        Facebook Comments
  *-------------------------------------------------------------------------------
  */
+
+define('EGW_PLUGIN', plugin_dir_url(__FILE__));
+define('EGW_CSS', plugin_dir_url(__FILE__) . 'assets/css/'); 
 
 /* ------------------------------------------------------------------------------
 * 1.0.0 Admin Functions
 * ------------------------------------------------------------------------------
 */
-require 'egw-admin.php';
+
+require 'admin/egw-admin-init.php';
 
 /* ------------------------------------------------------------------------------
 * 2.0.0 WP-MAIL Functions
