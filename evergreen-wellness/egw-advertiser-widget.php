@@ -60,7 +60,7 @@ class egw_aw_init extends WP_Widget
 		                                <div class="vc_col-sm-12">
 		                                	<?php if( $instance['address'] != null || $instance['address'] != '' ) : ?>
 		                                		<i class="fa fa-map-marker" aria-hidden="true"></i>
-		                                		<a href="http://maps.google.com/?q=<?php echo $instance['address']; ?>" target="_blank"><?php echo $instance['address']; ?>
+		                                		<a href="http://maps.google.com/?q=<?php echo $instance['address']; ?>" target="_blank"><?php echo $instance['address']; ?></a>
 		                                	<?php endif; ?>
 		                                </div>
 		                            </div>
