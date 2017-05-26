@@ -60,7 +60,7 @@ class egw_aw_init extends WP_Widget
 		                                <div class="vc_col-sm-12">
 		                                	<?php if( $instance['address'] != null || $instance['address'] != '' ) : ?>
 		                                		<i class="fa fa-map-marker" aria-hidden="true"></i>
-		                                		<?php echo $instance['address']; ?>
+		                                		<a href="http://maps.google.com/?q=<?php echo $instance['address']; ?>" target="_blank"><?php echo $instance['address']; ?>
 		                                	<?php endif; ?>
 		                                </div>
 		                            </div>
@@ -71,7 +71,7 @@ class egw_aw_init extends WP_Widget
 		                                <div class="vc_col-sm-12">
 		                                	<?php if( $instance['phone'] != null || $instance['phone'] != '' ) : ?>
 		                                		<i class="fa fa-phone" aria-hidden="true"></i>
-		                                		<?php echo $instance['phone']; ?>
+		                                		<a href="tel:<?php echo $instance['phone']; ?>"><?php echo $instance['phone']; ?></a>
 		                                	<?php endif; ?>
 		                                </div>
 		                            </div>
@@ -82,7 +82,7 @@ class egw_aw_init extends WP_Widget
 		                                <div class="vc_col-sm-12">
 		                                	<?php if( $instance['email'] != null || $instance['email'] != '' ) : ?>
 		                                		<i class="fa fa-envelope-o" aria-hidden="true"></i>
-		                                		<?php echo $instance['email']; ?>
+		                                		<a href="mailto:<?php echo $instance['email']; ?>"><?php echo $instance['email']; ?></a>
 		                                	<?php endif; ?>
 		                                </div>
 		                            </div>
