@@ -58,9 +58,14 @@ class egw_aw_init extends WP_Widget
 		                            <!-- Address -->
 		                            <div class="vc_row">
 		                                <div class="vc_col-sm-12">
-		                                	<?php if( $instance['address'] != null || $instance['address'] != '' ) : ?>
+		                                	<?php if( ( ( $instance['street'] || $instance['street2'] )!= null ) || ( ( $instance['street'] || $instance['street2'] ) != '' ) ): ?>
 		                                		<i class="fa fa-map-marker" aria-hidden="true"></i>
-		                                		<a href="http://maps.google.com/?q=<?php echo $instance['address']; ?>" target="_blank"><?php echo $instance['address']; ?></a>
+		                                		<a href="http://maps.google.com/?q=<?php echo $instance['street'] . $instance['street2']; ?>" style="" target="_blank">
+		                                			<?php echo $instance['street']; ?><br />
+		                                			<span style="text-indent: -15px; margin-left: 15px;">
+		                                				<?php echo $instance['street2']; ?>
+	                                				</span>
+		                                		</a>
 		                                	<?php endif; ?>
 		                                </div>
 		                            </div>
@@ -110,6 +115,15 @@ class egw_aw_init extends WP_Widget
 
     public function form( $instance )
     {
+    	$street = '';
+   		if( !empty( $instance['street'] ) ) {
+	        $street = $instance['street'];
+	    }
+
+    	$street2 = '';
+   		if( !empty( $instance['street2'] ) ) {
+	        $street2 = $instance['street2'];
+	    }
 
 		$title = '';
 	    if( !empty( $instance['title'] ) ) {
@@ -121,10 +135,10 @@ class egw_aw_init extends WP_Widget
 	        $name = $instance['name'];
 	    }
 
-	    $address = '';
-	    if( !empty( $instance['address'] ) ) {
-	        $address = $instance['address'];
-	    }
+	    // $address = '';
+	    // if( !empty( $instance['address'] ) ) {
+	    //     $address = $instance['address'];
+	    // }
 
 	    $phone = '';
 	    if( !empty( $instance['phone'] ) ) {
@@ -148,9 +162,17 @@ class egw_aw_init extends WP_Widget
         </p>
 
         <p>
-            <label for="<?php echo $this->get_field_name( 'address' ); ?>"><?php _e( 'Address:' ); ?></label>
-            <input class="widefat" id="<?php echo $this->get_field_id( 'address' ); ?>" name="<?php echo $this->get_field_name( 'address' ); ?>" type="text" value="<?php echo esc_attr( $address ); ?>" />
+            <label for="<?php echo $this->get_field_name( 'street' ); ?>"><?php _e( 'Street Line 1:' ); ?></label>
+            <input class="widefat" id="<?php echo $this->get_field_id( 'street' ); ?>" name="<?php echo $this->get_field_name( 'street' ); ?>" type="text" value="<?php echo esc_attr( $street ); ?>" />
         </p>
+        <p>
+            <label for="<?php echo $this->get_field_name( 'street2' ); ?>"><?php _e( 'Street Line 2:' ); ?></label>
+            <input class="widefat" id="<?php echo $this->get_field_id( 'steet2' ); ?>" name="<?php echo $this->get_field_name( 'street2' ); ?>" type="text" value="<?php echo esc_attr( $street2 ); ?>" />
+        </p>
+<!--         <p>
+            <label for="<?php echo $this->get_field_name( 'street' ); ?>"><?php _e( 'Street:' ); ?></label>
+            <input class="widefat" id="<?php #echo $this->get_field_id( 'address' ); ?>" name="<?php #echo $this->get_field_name( 'address' ); ?>" type="text" value="<?php #echo esc_attr( $address ); ?>" />
+        </p> -->
 
         <p>
             <label for="<?php echo $this->get_field_name( 'phone' ); ?>"><?php _e( 'Phone:' ); ?></label>
