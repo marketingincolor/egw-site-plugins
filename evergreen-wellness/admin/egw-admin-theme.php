@@ -83,3 +83,59 @@ function egw_sortable_production_column( $columns ) {
     };
 }
 add_filter( "pre_get_posts", "custom_search_query");*/
+
+
+
+//Gets post view meta for admin Views columns
+function egw_get_post_views( $postID ) {
+    $count_key = 'count_post_views';
+    $count = get_post_meta( $postID, $count_key, true );
+    if ( $count=='' ){
+        delete_post_meta( $postID, $count_key );
+        add_post_meta( $postID, $count_key, '0' );
+        return "0";
+    }
+    return $count;
+}
+
+//Adds Views column to admin
+function egw_posts_column_views( $defaults ) {
+    $defaults['post_views'] = __('Views');
+    return $defaults;
+}
+
+
+//Adds Views Column Data
+function egw_posts_custom_column_views( $column_name, $id ){
+  if ( $column_name === 'post_views' ) {
+        echo egw_get_post_views( get_the_ID() );
+    }
+}
+
+//Enables sorting on views column
+function egw_sortable_views_column( $columns ) {
+    $columns['post_views'] = 'slice';
+    return $columns;
+}
+
+//Correctly orders view columns by meta
+function egw_post_view_orderby( $query ) {
+    if( ! is_admin() )
+        return;
+ 
+    $orderby = $query->get( 'orderby');
+ 
+    if( 'slice' == $orderby ) {
+        $query->set('meta_key','count_post_views');
+        $query->set('orderby','meta_value_num');
+    }
+}
+
+add_filter( 'manage_post_posts_columns', 'egw_posts_column_views' );
+add_filter( 'manage_videos_posts_columns', 'egw_posts_column_views' );
+add_action( 'manage_videos_posts_custom_column', 'egw_posts_custom_column_views', 5, 2 );
+add_filter( 'manage_edit-post_sortable_columns', 'egw_sortable_views_column' );
+add_filter( 'manage_edit-videos_sortable_columns', 'egw_sortable_views_column' );
+add_action( 'pre_get_posts', 'egw_post_view_orderby' );
+add_action( 'manage_post_posts_custom_column', 'egw_posts_custom_column_views', 5, 2 );
+
