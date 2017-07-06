@@ -216,6 +216,9 @@ add_shortcode('fsp_custom_login', 'fspr_login_form');
 function fspr_login_form_fields() {
 
     ob_start();
+
+    // Check dev || production & send to correct SS backend
+    $ss_form = (ENVIRONMENT_MODE == 1) ? 'ae4bfb37-9df4-45a7-a93b-6d8ce9e4f287' : 'e8803dde-8e73-4457-8504-0d11cbab927d'; 
     ?>
     <div class="login-container">
         <h3 class="fspr_header" style="text-transform: none; color: #4c4d4f; font-weight: 700;" ><?php _e('Log into your branch'); ?></h3>
@@ -251,7 +254,7 @@ function fspr_login_form_fields() {
 		<script type="text/javascript">
 		    var __ss_noform = __ss_noform || [];
 		    __ss_noform.push(['baseURI', 'https://app-3QMYANU21K.marketingautomation.services/webforms/receivePostback/MzawMDG2NDQxAwA/']);
-		    __ss_noform.push(['endpoint', 'ae4bfb37-9df4-45a7-a93b-6d8ce9e4f287']);
+		    __ss_noform.push(['endpoint', '<?php echo $ss_form; ?>']);
 		</script>
 		<script type="text/javascript" src="https://koi-3QMYANU21K.marketingautomation.services/client/noform.js?ver=1.24" ></script>
 
