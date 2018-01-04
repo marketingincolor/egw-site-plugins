@@ -9,12 +9,9 @@
 	function egwsp_add_content($column_name, $post_ID) {
 		$post_author_id = get_post_field( 'post_author', $post_id );
 		$company_name = get_the_author_meta( 'egwsp_company_name', $post_author_id );
-		// $prod_id = get_post_field('production_id', $post_id);
-		$attachment = egwsp_get_logo($post_author_id);
+		$company_link = 
 
-		if ($column_name == 'prodid'):
-			echo $prod_id;
-		endif;
+		$attachment = egwsp_get_logo($post_author_id);
 	    if ($column_name == 'egwsp_sponsor_name') {
 	    	echo '<a href="' . get_edit_user_link() . '">' . $company_name . '</a>';
 	    }
@@ -28,8 +25,7 @@
 		$egwsp_columns = array(
 			'expirationdate' => __('Expiration Date'),
 			'egwsp_sponsor_name' => __('Sponsor Name'),
-			'egwsp_sponsor_logo' => __('Logo'),
-			'prodid' => __('Prod Id')
+			'egwsp_sponsor_logo' => __('Logo')
 		);
 		$columns = array_merge($columns, $egwsp_columns);
 	    unset (
@@ -38,20 +34,19 @@
 
 	    //Reorder
 		$reorder = array(
-			'cb',
-			'egwsp_sponsor_logo',
-			'egwsp_sponsor_name',
-			'title',
-			'date',
-			'prodid',
-			'expirationdate',
-			'tags', 'categories',
-			'wpseo-score',
-			'wpseo-score-readability',
+			'cb', 
+			'egwsp_sponsor_logo', 
+			'egwsp_sponsor_name', 
+			'title', 
+			'date', 
+			'expirationdate', 
+			'tags', 'categories', 
+			'wpseo-score', 
+			'wpseo-score-readability'
 		);
 
 		foreach ($reorder as $colname)
-		$new[$colname] = $columns[$colname];
+		$new[$colname] = $columns[$colname];    
 		return $new;
 	}
 

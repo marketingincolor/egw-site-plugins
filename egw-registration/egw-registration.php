@@ -245,7 +245,6 @@ function fspr_login_form_fields() {
                     <input id="fspr_login_submit" name="fspr_login_submit" type="submit" value="Login" class="fsplogin_btn"/>
                 </p>
                 <div class="fs_forgot_password">
-                    <a href="<?php echo home_url('/register') ?>">Join</a> |
                     <a href="<?php echo home_url('/forgot-password') ?>">Forgot your password?</a>
                 </div>
             </fieldset>

@@ -1,13 +1,5 @@
 <?php
 
-add_filter( 'manage_edit-post_sortable_columns', 'egw_disclaimer_sortable_column' );
-add_filter( 'manage_edit-videos_sortable_columns', 'egw_disclaimer_sortable_column' );
-function egw_disclaimer_sortable_column( $columns ) {
-    $columns['tmd'] = 'trademark_disclaimer';
-    return $columns;
-}
-
-
 /**
 * Description: Evergreen Wellness Admin Theme
 * Purpose - For Adding Evergreen Wellness - The Villages Admin Theme
@@ -49,11 +41,9 @@ if (get_current_blog_id() == '2')
  * @author  etwilbeck
  * @since  1.0.0
  */
-
-// add_filter('manage_sponsored-posts_columns', 'egw_columns_head');
 add_filter('manage_posts_columns', 'egw_columns_head');
 function egw_columns_head($columns) {
-    $columns['prodid'] = __('Prod ID');
+    $columns['prodid'] =__('Prod ID');
     return $columns;
 }
 
@@ -64,10 +54,10 @@ function egw_columns_content( $column_name, $post_id ) {
     $prodid = get_post_meta($post_id, 'production_id', true);
     echo intval($prodid);
 }
-
-add_filter( 'manage_edit-sponsored-posts_columns', 'egw_sortable_production_column' );
+add_filter( 'manage_edit-sponsored_posts_columns', 'egw_sortable_production_column' );
 add_filter( 'manage_edit-videos_sortable_columns', 'egw_sortable_production_column' );
 add_filter( 'manage_edit-post_sortable_columns', 'egw_sortable_production_column' );
+
 function egw_sortable_production_column( $columns ) {
     $columns['prodid'] = 'prod';
     //To make a column 'un-sortable' remove it from the array
@@ -127,7 +117,7 @@ function egw_posts_custom_column_views( $column_name, $id ){
 
 //Enables sorting on views column
 function egw_sortable_views_column( $columns ) {
-    $columns['post_views'] = 'views';
+    $columns['post_views'] = 'slice';
     return $columns;
 }
 
@@ -138,7 +128,7 @@ function egw_post_view_orderby( $query ) {
 
     $orderby = $query->get( 'orderby');
 
-    if( 'views' == $orderby ) {
+    if( 'slice' == $orderby ) {
         $query->set('meta_key','count_post_views');
         $query->set('orderby','meta_value_num');
     }
@@ -151,86 +141,4 @@ add_filter( 'manage_edit-post_sortable_columns', 'egw_sortable_views_column' );
 add_filter( 'manage_edit-videos_sortable_columns', 'egw_sortable_views_column' );
 add_action( 'pre_get_posts', 'egw_post_view_orderby' );
 add_action( 'manage_post_posts_custom_column', 'egw_posts_custom_column_views', 5, 2 );
-
-
-add_filter('manage_edit-post_columns', 'my_extra_hoh_columns');
-
-function my_extra_hoh_columns($columns) {
-    $columns['hoh'] =__('Hide on Homepage','myplugindomain');
-    return $columns;
-}
-
-add_filter('manage_edit-post_columns', 'egw_disclaimer_column');
-add_filter('manage_edit-videos_columns', 'egw_disclaimer_column');
-
-function egw_disclaimer_column($columns) {
-    $columns['tmd'] =__('Disclaimer','Evergreen Wellness');
-    return $columns;
-}
-
-add_action( 'manage_post_posts_custom_column', 'egw_disclaimer_column_content', 10, 2 );
-add_action( 'manage_videos_posts_custom_column', 'egw_disclaimer_column_content', 10, 2 );
-
-function egw_disclaimer_column_content( $column_name, $post_id ) {
-    if ( 'tmd' != $column_name ) {
-        return;
-    }
-    //Get number of slices from post meta
-    $disclaimer = get_field('trademark_disclaimer');
-    if($disclaimer):
-        echo '<span>&#10004;</span>';
-    else:
-        echo '<span>&#x2610;</span>';
-    endif;
-}
-
-
-
-add_action( 'manage_post_posts_custom_column', 'my_extra_hoh_column_content', 10, 2 );
-
-function my_extra_hoh_column_content( $column_name, $post_id ) {
-    if ( 'hoh' != $column_name ) {
-        return;
-    }
-    //Get number of slices from post meta
-    $hoh = get_field('hide_on_homepage');
-    if($hoh):
-        echo 'TRUE';
-    else:
-        echo 'FALSE';
-    endif;
-}
-
-
-add_filter( 'manage_edit-post_sortable_columns', 'my_sortable_hoh_column' );
-function my_sortable_hoh_column( $columns ) {
-    $columns['hoh'] = 'hide_on_homepage';
-
-    //To make a column 'un-sortable' remove it from the array
-    //unset($columns['date']);
-
-    return $columns;
-}
-
-add_action( 'pre_get_posts', 'egw_orderby' );
-function egw_orderby( $query ) {
-    if( ! is_admin() )
-        return;
-
-    $orderby = $query->get( 'orderby');
-    //echo '<div style="right:50%;">';
-    //var_dump($orderby);
-    //echo '</div>';
-
-    if( 'hide_on_homepage' == $orderby ) {
-        $query->set('meta_key','hide_on_homepage');
-        $query->set('orderby','meta_value');
-    }
-
-    if( 'trademark_disclaimer' == $orderby ) {
-        $query->set('meta_key', 'trademark_disclaimer');
-        $query->set('orderby', 'meta_value_num');
-    }
-}
-
 
